@@ -1,3 +1,3 @@
 # cuqipy-GUI
 
-GUI for cuqipy
+GUI for cuqipy. Uses https://pysimplegui.readthedocs.io.
