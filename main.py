@@ -41,7 +41,7 @@ def main():
     canvas = canvas_elem.TKCanvas
 
     # Draw the initial figure in the window
-    fig = plt.figure(figsize=(6,4))
+    fig = plt.figure(figsize=(6.4,4.8))
     fig_agg = draw_figure(canvas, fig)
 
 
