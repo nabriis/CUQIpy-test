@@ -61,7 +61,7 @@ def main():
             std = float(values['-SLIDER-DATAPOINTS-']) # std
 
             # Define and compute posterior to Deconvolution problem
-            TP = cuqi.testproblem.Deconvolution() # Default values
+            TP = cuqi.testproblem.Deconvolution1D() # Default values
             TP.prior = cuqi.distribution.Gaussian(np.zeros(128), std) # Set prior
             xs = TP.sample_posterior(5000) # Sample posterior
 
