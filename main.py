@@ -22,14 +22,67 @@ def draw_figure(canvas, figure):
     return figure_canvas_agg
 
 
+def make_callback_function(fig, fig_agg, TP, Ns):
+    """ Method to create a callback function that gets called by CUQIpy for each sample
+
+    Parameters
+    ----------
+    fig : matplotlib figure
+        Figure to plot progress in
+    
+    fig_agg : matplotlib figure
+        Figure to draw in GUI
+
+    TP : cuqi.testproblem.TestProblem
+        Test problem that is sampled from (used to get parameters)
+
+    Ns : int
+        Number of samples to draw
+
+    Returns
+    -------
+    callback : function
+        Callback function that we feed to CUQIpy
+    
+    Notes
+    -----
+    The current implementation stores the samples in a NumPy array and periodically creates a CUQI samples object and plots the CI.
+
+    """
+
+    # Preallocate samples array to compute statistics along the way
+    # TODO: In future versions of CUQIpy we can access the samples object directly in the callback function
+    samples = np.zeros((TP.model.domain_dim, Ns))
+
+    # Create callback method that we want CUQIpy to call. It must have structure (sample, n).
+    def callback(sample, n):
+
+        # Store current sample in array
+        samples[:, n-1] = sample
+
+        # Plot ci every x samples
+        if n % 50 == 0:
+
+            fig.clear()
+
+            # Create samples object with samples 0:n and plot ci
+            cuqi.samples.Samples(samples[:,:n]).plot_ci(exact=TP.exactSolution)
+            plt.ylim([-0.5,1.5])
+            plt.title(f"Samples 1:{n}")
+            
+            # Draw plot in GUI
+            fig_agg.draw()
+
+    return callback #We return the callback function so we can feed it to CUQIpy
+
 # Main method
 def main():
 
     # Define the GUI layout
     layout = [[sg.Text('CUQIpy interactive demo', size=(40, 1), justification='center', font='Helvetica 20')],
               [sg.Canvas(size=(640, 480), key='-CANVAS-')],
-              [sg.Text('Prior std')],
-              [sg.Slider(range=(0.01, 1.0), default_value=0.1, resolution=0.01, size=(40, 10), orientation='h', key='-SLIDER-DATAPOINTS-')],
+              [sg.Text('Laplace_diff prior scale')],
+              [sg.Slider(range=(0.0001, 0.1), default_value=0.01, resolution=0.0001, size=(40, 10), orientation='h', key='-SLIDER-DATAPOINTS-')],
               [sg.Button('Update', size=(10, 1), pad=((280, 0), 3), font='Helvetica 14')],
               [sg.Button('Exit', size=(10, 1), pad=((280, 0), 3), font='Helvetica 14')]]
 
@@ -44,7 +97,6 @@ def main():
     fig = plt.figure(figsize=(6.4,4.8))
     fig_agg = draw_figure(canvas, fig)
 
-
     while True:
 
         # Read current events and values from GUI
@@ -58,12 +110,20 @@ def main():
         if event in ('Update', None):
 
             # Get values from slider input
-            std = float(values['-SLIDER-DATAPOINTS-']) # std
+            scale = float(values['-SLIDER-DATAPOINTS-']) # scale
 
-            # Define and compute posterior to Deconvolution problem
-            TP = cuqi.testproblem.Deconvolution1D() # Default values
-            TP.prior = cuqi.distribution.Gaussian(np.zeros(128), std) # Set prior
-            xs = TP.sample_posterior(5000) # Sample posterior
+            # Number of samples
+            Ns = 500
+
+            # Define test problem and prior
+            TP = cuqi.testproblem.Deconvolution1D(phantom="square") # Default values
+            TP.prior = cuqi.distribution.Laplace_diff(np.zeros(TP.model.domain_dim), scale) # Set prior
+
+            # Create callback function for progress plotting (Burn-in is 20% by default so we allocate 120% of samples)
+            callback = make_callback_function(fig, fig_agg, TP, int(1.2*Ns))
+
+            # Sample posterior
+            xs = TP.sample_posterior(Ns, callback=callback)
 
             # Update plot
             fig.clear()
