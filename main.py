@@ -55,20 +55,22 @@ def make_callback_function(fig, fig_agg, TP, Ns):
     samples = np.zeros((TP.model.domain_dim, Ns))
 
     # Create callback method that we want CUQIpy to call. It must have structure (sample, n).
-    def callback(sample, n):
+    def callback(sample, sample_index):
 
         # Store current sample in array
-        samples[:, n-1] = sample
+        samples[:, sample_index] = sample
+
+        sample_number = sample_index + 1
 
         # Plot ci every x samples
-        if n % 50 == 0:
+        if sample_number % 50 == 0:
 
             fig.clear()
 
             # Create samples object with samples 0:n and plot ci
-            cuqi.samples.Samples(samples[:,:n]).plot_ci(exact=TP.exactSolution)
+            cuqi.samples.Samples(samples[:,:sample_number]).plot_ci(exact=TP.exactSolution)
             plt.ylim([-0.5,1.5])
-            plt.title(f"Samples 1:{n}")
+            plt.title(f"Samples [0:{sample_number})")
             
             # Draw plot in GUI
             fig_agg.draw()
