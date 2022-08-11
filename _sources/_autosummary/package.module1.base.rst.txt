@@ -1,0 +1,37 @@
+base
+====
+
+Module path: package.module1.base
+
+.. currentmodule:: package.module1
+
+.. automodule:: package.module1.base
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+    :toctree: package.module1.base
+    :nosignatures:
+    :recursive:
+
+   
+      class1
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,0 +1,28 @@
+class1
+======
+
+.. currentmodule:: package.module1.base
+
+.. autoclass:: class1
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~class1.__init__
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~class1.name
+   
+   

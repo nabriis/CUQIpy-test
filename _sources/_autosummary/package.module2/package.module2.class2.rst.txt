@@ -1,0 +1,22 @@
+class2
+======
+
+.. currentmodule:: package.module2
+
+.. autoclass:: class2
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~class2.__init__
+   
+   
+
+   
+   
+   

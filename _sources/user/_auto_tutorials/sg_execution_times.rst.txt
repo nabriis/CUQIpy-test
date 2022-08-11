@@ -1,0 +1,12 @@
+
+:orphan:
+
+.. _sphx_glr_user__auto_tutorials_sg_execution_times:
+
+Computation times
+=================
+**00:00.004** total execution time for **user__auto_tutorials** files:
+
++----------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_user__auto_tutorials_tutorial1.py` (``tutorial1.py``) | 00:00.004 | 0.0 MB |
++----------------------------------------------------------------------+-----------+--------+

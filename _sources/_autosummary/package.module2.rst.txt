@@ -1,0 +1,37 @@
+module2
+=======
+
+Module path: package.module2
+
+.. currentmodule:: package
+
+.. automodule:: package.module2
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+    :toctree: package.module2
+    :nosignatures:
+    :recursive:
+
+   
+      class2
+   
+   
+
+   
+   
+   
+
+
+
