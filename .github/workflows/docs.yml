@@ -6,9 +6,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
-      - name: Install dependencies
+      - name: Install sphinx dependencies
         run: |
           pip install sphinx sphinx-rtd-theme sphinxcontrib-napoleon sphinx-panels sphinx-copybutton pydata-sphinx-theme sphinx-gallery
+      - name: Install other dependencies
+        run: |
+          pip install matplotlib
       - name: Sphinx build
         run: |
           sphinx-build docs docs/_build
