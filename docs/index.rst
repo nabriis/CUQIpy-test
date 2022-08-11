@@ -1,5 +1,8 @@
-# Welcome to this fantastic package!
+Welcome to this fantastic package!
+==================================
 
+- :doc:`Tutorials <user/_auto_tutorials/index>`
+- :doc:`How-To Guides <user/_auto_howtos/index>`
 
 API reference
 =============
